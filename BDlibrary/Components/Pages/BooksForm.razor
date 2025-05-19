@@ -1,0 +1,92 @@
+﻿@page "/books/new"
+@page "/book/edit/{Id:int}"
+@rendermode InteractiveServer
+@inject NavigationManager _navigator;
+@inject IRepositorioBooks _repositorio;
+@using static BDlibrary.Modelos.Author
+@inject IRepositorioAuthors _repositorioAutores
+
+<h2>@_mensaje Libro</h2>
+<EditForm Model="_book" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="txtName" class="form-label">Nombre:</label>
+        <InputText @bind-Value="_book.Name" class="form-control" id="txtname" />
+        <ValidationMessage For="@(() => _book.Name)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="txtDescription" class="form-label">Descripción:</label>
+        <InputText @bind-Value="_book.Description" class="form-control" id="txtdescription" />
+        <ValidationMessage For="@(() => _book.Description)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="txtYear" class="form-label">Año de publicación:</label>
+        <InputNumber @bind-Value="_book.YearPublished" class="form-control" id="txtyear" />
+        <ValidationMessage For="@(() => _book.YearPublished)" />
+    </div>
+    <div class="mb-3">
+        <label for="authorSelect" class="form-label">Autor:</label>
+        <InputSelect @bind-Value="_book.AuthorId" class="form-select" id="authorSelect">
+            <option value="">Seleccione un autor</option>
+            @foreach (var autor in _autores)
+            {
+                <option value="@autor.AuthorId">@autor.Name</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => _book.AuthorId)" />
+        <div class="mt-2">
+            <a class="btn btn-outline-primary btn-sm" href="/author/new">+ Nuevo autor</a>
+        </div>
+    </div>
+
+
+    <button type="submit" class="btn btn-success">Guardar</button>
+    <button class="btn btn-danger ms-3" onclick="Cancelar" @onclick:preventDefault>Cancelar</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set;  }
+    private string _mensaje = "";
+    private Book? _book = new();
+    private List<Author> _autores = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id > 0)
+        {
+            _book = await _repositorio.Get(Id);
+            _mensaje = "Modificar";
+        }
+        else
+        {
+            _book = new Book();
+            _mensaje = "Nuevo";
+        }
+
+        _autores = await _repositorioAutores.GetAll();
+    }
+
+
+    private async void Guardar()
+    {
+        if (Id > 0)
+        {
+            await _repositorio.Update(Id, _book);
+        }
+        else
+        {
+            await _repositorio.Add(_book!);
+        }
+        Cancelar();
+    }
+
+    private void Cancelar()
+    {
+        _navigator.NavigateTo("/books");
+    }
+}

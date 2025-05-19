@@ -1,0 +1,76 @@
+﻿@page "/books"
+@rendermode InteractiveServer
+@inject NavigationManager _navigator;
+@inject IRepositorioBooks _repositorio;
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+<h3>Libros</h3>
+
+<button class="btn-success" href="books/new">Agregar libro</button>
+
+@if (_books == null)
+{
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden">Cargando...</span>
+    </div>
+}
+else if (_books.Count == 0)
+{
+    <h3>No existen libros registrados</h3>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Año de Publicación</th>
+                <th>Autor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var b in _books)
+            {
+                <tr>
+                    <td>@b.Name</td>
+                    <td>@b.Description</td>
+                    <td>@b.YearPublished</td>
+                    <td>@b.AuthorId</td>
+                    <td>
+                        <button class="btn btn-outline-danger" title="Eliminar" @onclick="() => Eliminar(b)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="btn btn-outline-danger" title="Eliminar" @onclick="() => Eliminar(b)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    private List<Book>? _books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _books = await _repositorio.GetAll();
+    }
+
+    private async void Eliminar(Book b)
+    {
+        await _repositorio.Delete(b.BookId);
+        _books!.Remove(b);
+        StateHasChanged();
+    }
+
+    private void Edit(int id)
+    {
+        _navigator.NavigateTo($"/book/edit/{id}");
+    }
+}
+
