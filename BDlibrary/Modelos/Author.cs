@@ -10,10 +10,12 @@ namespace BDlibrary.Modelos
         [StringLength(100, ErrorMessage = "Máximo 100 caracteres")]
         public string? Name { get; set; }
         [Required(ErrorMessage = "La fecha de nacimiento es obligatoria.")]
-        public DateTime? BirthDate {  get; set; }
+        [Range(1000, 9999, ErrorMessage = "Ingrese un año válido.")]
+        public int? BirthDate { get; set; }
         [Required(ErrorMessage = "La nacionalidad es obligatoria")]
         [StringLength(100, ErrorMessage = "Máximo 100 caracteres")]
         public string? Nacionalidad { get; set; }
+        virtual public ICollection<Book>? Books { get; set; }
 
     }
 }

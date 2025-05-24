@@ -3,6 +3,7 @@ using BDlibrary.Modelos;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BDlibrary.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    partial class LibraryDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250524212849_correccion5")]
+    partial class correccion5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,23 +76,7 @@ namespace BDlibrary.Migrations
 
                     b.HasKey("BookId");
 
-                    b.HasIndex("AuthorId");
-
                     b.ToTable("Books");
-                });
-
-            modelBuilder.Entity("BDlibrary.Modelos.Book", b =>
-                {
-                    b.HasOne("BDlibrary.Modelos.Author", "Author")
-                        .WithMany("Books")
-                        .HasForeignKey("AuthorId");
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("BDlibrary.Modelos.Author", b =>
-                {
-                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

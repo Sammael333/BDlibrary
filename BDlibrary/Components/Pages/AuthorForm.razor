@@ -3,7 +3,7 @@
 @inject IRepositorioAuthors _repositorio;
 
 <h3>Nuevo Autor</h3>
-<EditForm Model="_author" OnValidSubmit="Guardar">
+<EditForm Model="_author" OnValidSubmit="Guardar" FormName="autorForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -14,8 +14,8 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Fecha de nacimiento:</label>
-        <InputDate @bind-Value="_author.BirthDate" class="form-control" />
+        <label class="form-label">Año de nacimiento:</label>
+        <InputNumber @bind-Value="_author.BirthDate" class="form-control" />
         <ValidationMessage For="@(() => _author.BirthDate)" />
     </div>
 
@@ -31,10 +31,18 @@
 
 @code {
     private Author _author = new();
+    public int Id { get; set; }
 
     private async Task Guardar()
     {
-        await _repositorio.Add(_author);
+        if (Id > 0)
+        {
+            await _repositorio.Update(Id, _author);
+        }
+        else
+        {
+            await _repositorio.Add(_author!);
+        }
         _navigator.NavigateTo("/books/new");
     }
 
