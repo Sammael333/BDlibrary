@@ -5,7 +5,7 @@
 namespace BDlibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial3 : Migration
+    public partial class correccion10 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

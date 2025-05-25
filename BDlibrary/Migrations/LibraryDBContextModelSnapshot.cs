@@ -29,7 +29,7 @@ namespace BDlibrary.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorId"));
 
-                    b.Property<int>("BirthDate")
+                    b.Property<int>("BirthYear")
                         .HasColumnType("int");
 
                     b.Property<string>("Nacionalidad")

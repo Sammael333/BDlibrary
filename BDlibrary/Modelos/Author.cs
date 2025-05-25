@@ -11,7 +11,7 @@ namespace BDlibrary.Modelos
         public string? Name { get; set; }
         [Required(ErrorMessage = "La fecha de nacimiento es obligatoria.")]
         [Range(1000, 9999, ErrorMessage = "Ingrese un año válido.")]
-        public int? BirthDate { get; set; }
+        public int BirthYear { get; set; }
         [Required(ErrorMessage = "La nacionalidad es obligatoria")]
         [StringLength(100, ErrorMessage = "Máximo 100 caracteres")]
         public string? Nacionalidad { get; set; }

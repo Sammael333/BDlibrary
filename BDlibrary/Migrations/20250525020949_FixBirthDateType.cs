@@ -5,24 +5,22 @@
 namespace BDlibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class correccion5 : Migration
+    public partial class FixBirthDateType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "YearOfBirth",
+            migrationBuilder.AlterColumn<int>(
+                name: "BirthDate",
                 table: "Authors",
-                newName: "BirthDate");
+                nullable: false,
+                oldClrType: typeof(DateTime));
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameColumn(
-                name: "BirthDate",
-                table: "Authors",
-                newName: "YearOfBirth");
+
         }
     }
 }

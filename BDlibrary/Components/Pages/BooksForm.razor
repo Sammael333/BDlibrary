@@ -3,17 +3,16 @@
 @rendermode InteractiveServer
 @inject NavigationManager _navigator;
 @inject IRepositorioBooks _repositorio;
-@using static BDlibrary.Modelos.Author
 @inject IRepositorioAuthors _repositorioAutores
 
 <h2>@_mensaje Libro</h2>
-<EditForm Model="_book" OnValidSubmit="Guardar">
+<EditForm Model="@_book" OnValidSubmit="Guardar" FormName="libroForm">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
     <div class="mb-3">
         <label for="txtName" class="form-label">Nombre:</label>
-        <InputText @bind-Value="_book.Name" class="form-control" id="txtname" />
+        <InputText @bind-Value="_book!.Name" class="form-control" id="txtname" />
         <ValidationMessage For="@(() => _book.Name)" />
     </div>
 
@@ -30,9 +29,9 @@
     </div>
     <div class="mb-3">
         <label for="authorSelect" class="form-label">Autor:</label>
-        <InputSelect @bind-Value="_book.AuthorId" class="form-select" id="authorSelect">
-            <option value="">Seleccione un autor</option>
-            @foreach (var autor in _autores)
+        <InputSelect @bind-Value="_book.AuthorId" class="form-select">
+            <option value="0" enabled="enabled">Seleccione un autor</option>
+            @foreach (Author autor in _autores)
             {
                 <option value="@autor.AuthorId">@autor.Name</option>
             }
@@ -45,7 +44,7 @@
 
 
     <button type="submit" class="btn btn-success">Guardar</button>
-    <button class="btn btn-danger ms-3" onclick="Cancelar" @onclick:preventDefault>Cancelar</button>
+    <button class="btn btn-danger ms-3" @onclick="Cancelar" @onclick:preventDefault>Cancelar</button>
 </EditForm>
 
 @code {
@@ -68,15 +67,15 @@
             _mensaje = "Nuevo";
         }
 
-        _autores = await _repositorioAutores.GetAll();
+        _autores = await _repositorio.GetAuthors();
     }
 
 
-    private async void Guardar()
+    private async Task Guardar()
     {
         if (Id > 0)
         {
-            await _repositorio.Update(Id, _book);
+            await _repositorio.Update(Id, _book!);
         }
         else
         {

@@ -33,6 +33,10 @@ namespace BDlibrary.Repositorio
         {
             return await _context.Books.ToListAsync();
         }
+        public async Task<List<Author>> GetAuthors()
+        {
+            return await _context.Authors.ToListAsync();
+        }
         public async Task Update(int id, Book book)
         {
             var bookactual = await _context.Books.FindAsync(id);

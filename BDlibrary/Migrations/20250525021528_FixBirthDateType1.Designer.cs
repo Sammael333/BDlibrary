@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BDlibrary.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    [Migration("20250524212114_correccion3")]
-    partial class correccion3
+    [Migration("20250525021528_FixBirthDateType1")]
+    partial class FixBirthDateType1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace BDlibrary.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorId"));
 
+                    b.Property<int>("BirthDate")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nacionalidad")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -41,9 +44,6 @@ namespace BDlibrary.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("YearOfBirth")
-                        .HasColumnType("int");
 
                     b.HasKey("AuthorId");
 
@@ -76,7 +76,23 @@ namespace BDlibrary.Migrations
 
                     b.HasKey("BookId");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BDlibrary.Modelos.Book", b =>
+                {
+                    b.HasOne("BDlibrary.Modelos.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("BDlibrary.Modelos.Author", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

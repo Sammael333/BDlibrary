@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BDlibrary.Migrations
 {
     [DbContext(typeof(LibraryDBContext))]
-    [Migration("20250524220525_correccion6")]
-    partial class correccion6
+    [Migration("20250525025659_FixBirthDateType2")]
+    partial class FixBirthDateType2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,7 @@ namespace BDlibrary.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorId"));
 
-                    b.Property<int>("BirthDate")
+                    b.Property<int>("BirthYear")
                         .HasColumnType("int");
 
                     b.Property<string>("Nacionalidad")
@@ -76,7 +76,23 @@ namespace BDlibrary.Migrations
 
                     b.HasKey("BookId");
 
+                    b.HasIndex("AuthorId");
+
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BDlibrary.Modelos.Book", b =>
+                {
+                    b.HasOne("BDlibrary.Modelos.Author", "Author")
+                        .WithMany("Books")
+                        .HasForeignKey("AuthorId");
+
+                    b.Navigation("Author");
+                });
+
+            modelBuilder.Entity("BDlibrary.Modelos.Author", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }

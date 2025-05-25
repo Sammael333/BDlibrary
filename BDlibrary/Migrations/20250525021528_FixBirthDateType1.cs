@@ -5,12 +5,17 @@
 namespace BDlibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class correccion4 : Migration
+    public partial class FixBirthDateType1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(name: "YearPublished", table: "Books");
 
+            migrationBuilder.AddColumn<int>(
+                name: "YearPublished",
+                table: "Books",
+                nullable: false);
         }
 
         /// <inheritdoc />

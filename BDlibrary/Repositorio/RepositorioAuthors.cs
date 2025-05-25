@@ -12,10 +12,11 @@ namespace BDlibrary.Repositorio
         }
         public async Task<Author> Add(Author author)
         {
-            _context.Authors.Add(author);
+            await _context.Authors.AddAsync(author);
             await _context.SaveChangesAsync();
             return author;
         }
+
         public async Task Delete(int id)
         {
             var author = await _context.Authors.FindAsync(id);
@@ -39,7 +40,7 @@ namespace BDlibrary.Repositorio
             if (autoractual is not null)
             {
                 autoractual.Name = author.Name;
-                autoractual.BirthDate = author.BirthDate;
+                autoractual.BirthYear = author.BirthYear;
                 autoractual.Nacionalidad = author.Nacionalidad;
                 await _context.SaveChangesAsync();
             }

@@ -15,8 +15,8 @@
 
     <div class="mb-3">
         <label class="form-label">Año de nacimiento:</label>
-        <InputNumber @bind-Value="_author.BirthDate" class="form-control" />
-        <ValidationMessage For="@(() => _author.BirthDate)" />
+        <InputNumber @bind-Value="_author.BirthYear" class="form-control" />
+        <ValidationMessage For="@(() => _author.BirthYear)" />
     </div>
 
     <div class="mb-3">
@@ -30,7 +30,7 @@
 </EditForm>
 
 @code {
-    private Author _author = new();
+    private Author _author = new() { BirthYear = 2000 };
     public int Id { get; set; }
 
     private async Task Guardar()
@@ -43,11 +43,12 @@
         {
             await _repositorio.Add(_author!);
         }
-        _navigator.NavigateTo("/books/new");
+        Cancelar();
     }
+
 
     private void Cancelar()
     {
-        _navigator.NavigateTo("/books/new");
+        _navigator.NavigateTo("/author/new");
     }
 }

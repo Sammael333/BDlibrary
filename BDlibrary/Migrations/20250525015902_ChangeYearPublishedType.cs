@@ -5,11 +5,16 @@
 namespace BDlibrary.Migrations
 {
     /// <inheritdoc />
-    public partial class correccion6 : Migration
+    public partial class ChangeYearPublishedType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AlterColumn<int>(
+    name: "YearPublished",
+    table: "Books",
+    nullable: false,
+    oldClrType: typeof(DateTime));
 
         }
 
