@@ -12,7 +12,7 @@ namespace BDlibrary.Repositorio
         }
         public async Task<Author> Add(Author author)
         {
-            await _context.Authors.AddAsync(author);
+            _context.Authors.Add(author);
             await _context.SaveChangesAsync();
             return author;
         }
